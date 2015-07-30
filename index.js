@@ -20,6 +20,7 @@ function gitSync (opts, cb) {
       .then(checkoutBranch(branch))
       .then(callbackOnChange(cb))
       .catch(cb)
+      .done()
   }
 
   onTick()
@@ -49,7 +50,7 @@ function checkoutBranch (branch) {
   return function (repo) {
     return repo.getBranchCommit(branch)
       .then(function (commit) {
-        return Git.Checkout.tree(branch, commit)
+        return Git.Checkout.tree(repo, commit)
           .then(function () {
             return commit
           })
