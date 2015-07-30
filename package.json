@@ -1,0 +1,37 @@
+{
+  "name": "git-sync",
+  "version": "0.0.0",
+  "description": "sync a remote git url to a local dir at a branch",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/holodex/git-sync.git"
+  },
+  "keywords": [
+    "git",
+    "sync",
+    "poll",
+    "pull",
+    "clone"
+  ],
+  "author": "ahdinosaur",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/holodex/git-sync/issues"
+  },
+  "homepage": "https://github.com/holodex/git-sync#readme",
+  "devDependencies": {
+    "tape": "^4.0.1"
+  },
+  "dependencies": {
+    "cron": "^1.0.9",
+    "defined": "^1.0.0",
+    "nodegit": "^0.4.1"
+  }
+}
