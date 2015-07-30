@@ -12,8 +12,7 @@ function gitSync (opts, cb) {
   var localDir = opts.localDir
   if (localDir == null) { throw new Error('gitSync: localDir option is required.')} 
   var branch = defined(opts.branch, 'master')
-  var cronTime = opts.cronTime
-  if (cronTime == null) { throw new Error('gitSync: cronTime option is required.')} 
+  var cronTime = defined(opts.cronTime, '* */15 * * * *')
   var timeZone = opts.timeZone
 
   function onTick () {
