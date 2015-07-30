@@ -59,7 +59,12 @@ function checkoutBranch (branch) {
 }
 
 function callbackOnChange (cb) {
+  var lastCommitId = null
   return function (commit) {
-    cb(null, commit)
+    var commitId = commit.id()
+    if (commitId !== lastCommitId) {
+      lastCommitId = commitId
+      cb(null, commit)
+    }
   }
 }
