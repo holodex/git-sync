@@ -36,6 +36,6 @@ possible `options` are:
 - `branch`: an optional `String` to specify the name of a git branch
 - `cronTime`: any CronTime format supported by [cron](https://www.npmjs.com/package/cron)
 
-`cb` is a function that will be called every time there is an error or after the git repository is updated with a new commit.
+`cb` is a function that will be called every time there is an error or after the git repository is updated with a new commit. it will be called node-style, with an `Error` (if any) as the first argument and a [NodeGit `Commit`](http://www.nodegit.org/api/commit/) (if any) as the second argument.
 
 `cronJob` returned by `gitSync()` is a [CronJob](https://www.npmjs.com/package/cron) which can be `.stop()` or `.start()`.
