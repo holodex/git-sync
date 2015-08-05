@@ -47,10 +47,13 @@ function getRepo (remoteUrl, localDir) {
 }
 
 function checkoutBranch (branch) {
+  var branchPath = 'origin/' + branch
   return function (repo) {
-    return repo.getBranchCommit(branch)
+    return repo.getBranchCommit(branchPath)
       .then(function (commit) {
-        return Git.Checkout.tree(repo, commit)
+        return Git.Checkout.tree(repo, commit, {
+          checkoutStrategy: Git.Checkout.STRATEGY.FORCE
+        })
           .then(function () {
             return commit
           })
