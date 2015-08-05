@@ -47,16 +47,32 @@ function getRepo (remoteUrl, localDir) {
 }
 
 function checkoutBranch (branch) {
-  var branchPath = 'origin/' + branch
   return function (repo) {
-    return repo.getBranchCommit(branchPath)
-      .then(function (commit) {
-        return Git.Checkout.tree(repo, commit, {
+    // get local branch
+    return repo.getBranch(branch)
+      .catch(function (err) {
+        // TODO check for specific error
+        // create local branch from remote
+        return repo.getBranchCommit('origin/' + branch)
+          .then(function (commit) {
+            return repo.createBranch(
+              branch,
+              commit,
+              true, // force
+              repo.defaultSignature(), // signature
+              'create ' + branch + ' branch' // log message
+            )
+          })
+      })
+      // checkout local branch
+      .then(function (branchRef) {
+        return repo.checkoutBranch(branchRef, {
           checkoutStrategy: Git.Checkout.STRATEGY.FORCE
         })
-          .then(function () {
-            return commit
-          })
+      })
+      // return latest commit
+      .then(function () {
+        return repo.getBranchCommit(branch)
       })
   }
 }
