@@ -1,6 +1,6 @@
 {
   "name": "git-sync",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "sync a remote git url to a local dir at a branch",
   "main": "index.js",
   "directories": {
