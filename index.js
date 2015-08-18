@@ -15,13 +15,19 @@ function gitSync (opts, cb) {
   var cronTime = defined(opts.cronTime, '* */15 * * * *')
   var timeZone = opts.timeZone
 
-  function onTick () {
-    getRepo(remoteUrl, localDir)
-      .then(checkoutBranch(branch))
-      .then(callbackOnChange(cb))
-      .catch(cb)
-      .done()
+  function createOnTick () {
+    var onChange = callbackOnChange(cb)
+
+    return function () {
+      getRepo(remoteUrl, localDir)
+        .then(checkoutBranch(branch))
+        .then(onChange)
+        .catch(cb)
+        .done()
+    }
   }
+
+  var onTick = createOnTick()
 
   onTick()
 
@@ -81,7 +87,7 @@ function callbackOnChange (cb) {
   var lastCommitId = null
   return function (commit) {
     var commitId = commit.id()
-    if (commitId !== lastCommitId) {
+    if (lastCommitId == null || !commitId.equal(lastCommitId)) {
       lastCommitId = commitId
       cb(null, commit)
     }
