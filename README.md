@@ -40,3 +40,21 @@ possible `options` are:
 `cb` is a function that will be called every time there is an error or after the git repository is updated with a new commit. it will be called node-style, with an `Error` (if any) as the first argument and a [NodeGit `Commit`](http://www.nodegit.org/api/commit/) (if any) as the second argument.
 
 `cronJob` returned by `gitSync()` is a [CronJob](https://www.npmjs.com/package/cron) which can be `.stop()` or `.start()`.
+
+## faq
+
+### https
+
+if using an HTTPS url (`https://github.com/holodex/git-sync`) and you receive the following error:
+
+> [Error: The SSL certificate is invalid]
+
+then set the `noCertificateCheck` option to `true`.
+
+### ssh
+
+if using an SSH url (`git@github.com:holodex/git-sync`) and you receive the following error:
+
+> [Error: authentication required but no callback set]
+
+then post in [this issue](https://github.com/holodex/git-sync/issues/2#issuecomment-152686185) as it's not yet implemented. pull requests welcome! :)
