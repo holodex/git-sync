@@ -100,7 +100,7 @@ function callbackOnChange (cb) {
   }
 }
 
-function noCheckCertificate () {
+function noCheckCertificateFn () {
   // github will fail cert check on some OSX machines
   // this overrides that check
   return 1
