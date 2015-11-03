@@ -12,6 +12,7 @@ function gitSync (opts, cb) {
   var localDir = opts.localDir
   if (localDir == null) { throw new Error('gitSync: localDir option is required.')} 
   var branch = defined(opts.branch, 'master')
+  var noCertificateCheck = defined(opts.noCertificateCheck, false)
   var cronTime = defined(opts.cronTime, '* */15 * * * *')
   var timeZone = opts.timeZone
 
@@ -19,7 +20,7 @@ function gitSync (opts, cb) {
     var onChange = callbackOnChange(cb)
 
     return function () {
-      getRepo(remoteUrl, localDir)
+      getRepo(remoteUrl, localDir, { noCertificateCheck: noCertificateCheck })
         .then(checkoutBranch(branch))
         .then(onChange)
         .catch(cb)
@@ -39,14 +40,19 @@ function gitSync (opts, cb) {
   })
 }
 
-function getRepo (remoteUrl, localDir) {
+function getRepo (remoteUrl, localDir, opts) {
   return Git.Repository.open(localDir)
     .catch(function (repo) {
       return null
     })
     .then(function (repo) {
       if (repo == null) {
-        return Git.Clone(remoteUrl, localDir, {})
+        return Git.Clone(remoteUrl, localDir, {
+          remoteCallbacks: {
+            certificateCheck: opts.noCertificateCheck ?
+              noCertificateCheckFn : undefined
+          }
+        })
       }
       return repo
     })
@@ -92,4 +98,10 @@ function callbackOnChange (cb) {
       cb(null, commit)
     }
   }
+}
+
+function noCheckCertificate () {
+  // github will fail cert check on some OSX machines
+  // this overrides that check
+  return 1
 }
